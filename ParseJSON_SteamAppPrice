@@ -1,0 +1,32 @@
+        private double ValorSteam(string codigoSteam)
+        {
+            if (codigoSteam == "")
+            {
+                return 0;
+            }
+            else
+            {
+
+                try
+                {
+                    WebClient wc = new WebClient();
+                    string codApp = codigoSteam;
+                    var json = wc.DownloadString("http://store.steampowered.com/api/appdetails?appids=" + codApp + "&cc=br");
+                    XmlDocument xmlDoc = JsonConvert.DeserializeXmlNode(json);
+                    XmlNodeList nodes = xmlDoc.DocumentElement.SelectNodes("data");
+                    foreach (XmlNode node in nodes)
+                    {
+                        string price = node.SelectSingleNode("price_overview/final").InnerText;
+                        double valor = Convert.ToDouble(price.Insert(price.Count() - 2, ","));
+                        return valor;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    MessageBox.Show("Codigo de jogo não cadastrado ou cadastrado erradamente");
+                    return 0;
+                }
+            }
+            return 0;
+        }

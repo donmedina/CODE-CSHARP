@@ -11,6 +11,9 @@
                 {
                     WebClient wc = new WebClient();
                     string codApp = codigoSteam;
+                    
+                    //For change currency you must be change this "cc=br" for your country code.
+                    
                     var json = wc.DownloadString("http://store.steampowered.com/api/appdetails?appids=" + codApp + "&cc=br");
                     XmlDocument xmlDoc = JsonConvert.DeserializeXmlNode(json);
                     XmlNodeList nodes = xmlDoc.DocumentElement.SelectNodes("data");
